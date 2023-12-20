@@ -1,0 +1,112 @@
+class Node<E> {
+  E value;
+  Node<E>? next;
+
+  Node(this.value, {this.next});
+}
+
+void printInReverse(Node? node) {
+  var stack = Stack<Node>();
+  while (node != null) {
+    stack.push(node);
+    node = node.next;
+  }
+  while (!stack.isEmpty) {
+    print(stack.pop().value);
+  }
+}
+
+Node? findMiddleNode(Node? node) {
+  var slow = node;
+  var fast = node;
+
+  while (fast != null && fast.next != null) {
+    slow = slow?.next;
+    fast = fast.next?.next;
+  }
+
+  return slow;
+}
+
+Node? reverseLinkedList(Node? node) {
+  Node? prev = null;
+  Node? current = node;
+  Node? next;
+
+  while (current != null) {
+    next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
+  }
+
+  return prev;
+}
+
+Node? removeAllOccurrences(Node? node, var value) {
+  while (node != null && node.value == value) {
+    node = node.next;
+  }
+
+  var current = node;
+
+  while (current != null && current.next != null) {
+    if (current.next!.value == value) {
+      current.next = current.next!.next;
+    } else {
+      current = current.next;
+    }
+  }
+
+  return node;
+}
+
+void printLinkedList(Node? node) {
+  while (node != null) {
+    print(node.value);
+    node = node.next;
+  }
+}
+
+class Stack<E> {
+  final List<E> _list = [];
+
+  void push(E value) {
+    _list.add(value);
+  }
+
+  E pop() {
+    var value = _list.last;
+    _list.removeLast();
+    return value;
+  }
+
+  bool get isEmpty => _list.isEmpty;
+}
+
+void main() {
+  var node1 = Node(1);
+  var node2 = Node(2);
+  var node3 = Node(3);
+  var node4 = Node(4);
+  var node5 = Node(5);
+  node1.next = node2;
+  node2.next = node3;
+  node3.next = node4;
+  node4.next = node5;
+
+  print('Challenge 1: Print in Reverse');
+  printInReverse(node1);
+
+  print('\nChallenge 2: Find the Middle Node');
+  var middle = findMiddleNode(node1);
+  print('Middle node value is ${middle?.value}');
+
+  print('\nChallenge 3: Reverse a Linked List');
+  var reversed = reverseLinkedList(node1);
+  printLinkedList(reversed);
+
+  print('\nChallenge 4: Remove All Occurrences');
+  var removed = removeAllOccurrences(reversed, 2);
+  printLinkedList(removed);
+}
